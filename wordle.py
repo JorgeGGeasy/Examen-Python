@@ -12,8 +12,9 @@ def choose_secret():
         for linea in f:
             listaPalabras.append(linea)
     palabra = random.choice(listaPalabras)
-    
-    return palabra 
+    #lower(): transforma a minúsculas la cadena pasada como parámetro
+    #upper(): transforma a mayúsculas la cadena pasada como parámetro
+    return palabra.upper() 
     
 def compare_words(word, secret):
     """Dadas dos palabras en mayÃºsculas (word y secret), esta funciÃ³n calcula las posiciones de las letras de word que aparecen 
@@ -34,7 +35,7 @@ def compare_words(word, secret):
     for i in range(0,5):
         for j in range(0,5):
             if word[j] == secret[i]:
-                same_letter.append(i)
+                same_letter.append(j)
 
     print(same_position)
     print(same_letter)
@@ -50,16 +51,42 @@ def print_word(word, same_position, same_letter):
       same_letter: Lista de posiciones. Ej. [1,2]
     Returns:
       transformed: La palabra aplicando las transformaciones. En el caso anterior: "Cam--"
+      
+      CAMPO
+      
+      CREMA
+
+      C--ma
     """
+    transformed = ["-","-","-","-","-"]
+    for i in range(0,len(same_letter)):
+        transformed[same_letter[i]] = word[same_letter[i]].lower()
+    for i in range(0,len(same_position)):
+        transformed[same_position[i]] = word[same_position[i]]
+    return transformed
     
 def choose_secret_advanced():
-    """Dado un nombre de fichero, esta funciÃ³n filtra solo las palabras de 5 letras que no tienen acentos (Ã¡,Ã©,Ã­,Ã³,Ãº). De estas palabras, la funciÃ³n devuelve una lista de 15 aleatorias no repetidas y una de estas 15, se selecciona aleatoriamente como palabra secret.
+    """Dado un nombre de fichero, esta funciÃ³n filtra solo las palabras de 5 letras que no tienen acentos (Ã¡,Ã©,Ã­,Ã³,Ãº). 
+       De estas palabras, la funciÃ³n devuelve una lista de 15 aleatorias no repetidas y una de estas 15, se selecciona aleatoriamente como palabra secret.
     Args:
       filename: El nombre del fichero. Ej. "palabras_extended.txt"
     Returns:
       selected: Lista de 15 palabras aleatorias no repetidas que tienen 5 letras y no tienen acentos
       secret: Palabra elegida aleatoriamente de la lista de 15 seleccionadas transformada a mayÃºsculas
     """
+    listaPalabras=[]
+    with open("palabras_extended.txt", mode="rt", encoding="utf-8") as f:
+        for linea in f:
+            listaPalabras.append(linea)
+
+    for i in range(0, len(listaPalabras)):
+        for j in range(0,len(listaPalabras[i])):
+            if listaPalabras[i][j] == "á" or listaPalabras[i][j] == "é" or listaPalabras[i][j] == "í" or  listaPalabras[i][j] == "ó" or  listaPalabras[i][j] == "ú":
+                print(listaPalabras[i])
+    palabra = random.choice(listaPalabras)
+    #lower(): transforma a minúsculas la cadena pasada como parámetro
+    #upper(): transforma a mayúsculas la cadena pasada como parámetro
+    return palabra.upper() 
  
 def check_valid_word():
     """Dada una lista de palabras, esta funciÃ³n pregunta al usuario que introduzca una palabra hasta que introduzca una que estÃ© en la lista. Esta palabra es la que devolverÃ¡ la funciÃ³n.
@@ -70,7 +97,7 @@ def check_valid_word():
     """
 
 if __name__ == "__main__":
-    secret=choose_secret()
+    secret=choose_secret_advanced()
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
         word = input("Introduce una nueva palabra: ")
