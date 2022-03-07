@@ -8,9 +8,15 @@ def choose_secret():
       secret: Palabra elegida aleatoriamente del fichero transformada a mayÃºsculas. Ej. "CREMA"
     """
     listaPalabras=[]
-    with open("palabras_reduced.txt", mode="rt", encoding="utf-8") as f:
-        for linea in f:
-            listaPalabras.append(linea)
+    error = False
+    try:
+        with open("palabras_reduced.txt", mode="rt", encoding="utf-8") as f:
+            for linea in f:
+                listaPalabras.append(linea)
+    except:
+        error = True
+    if(error or len(listaPalabras) == 0):
+        raise ValueError("Fichero vacio")
     palabra = random.choice(listaPalabras)
     #lower(): transforma a minúsculas la cadena pasada como parámetro
     #upper(): transforma a mayúsculas la cadena pasada como parámetro
@@ -28,17 +34,27 @@ def compare_words(word, secret):
     """
     same_position=[]
     same_letter=[]
-    for i in range(0,5):
+
+    if len(word) != len(secret)-1:
+        raise ValueError("No tienen el mismo tamaño")
+
+
+    for i in range(0,len(word)):
         if word[i] == secret[i]:
             same_position.append(i)
 
-    for i in range(0,5):
-        for j in range(0,5):
+    for i in range(0,len(word)):
+        for j in range(0,len(word)):
             if word[j] == secret[i]:
                 same_letter.append(j)
 
-    print(same_position)
-    print(same_letter)
+    for i in range(0,len(same_letter)):
+        if same_letter[i] < 0 or same_letter[i] > len(word):
+            raise ValueError("Same_letter incluye valores negativos o tiene mayor longitud que la palabra")
+    for i in range(0,len(same_position)):
+        if same_position[i] < 0 or same_position[i] > len(word):
+            raise ValueError("Same_position incluye valores negativos o tiene mayor longitud que la palabra")
+
     return same_position , same_letter
 
 def print_word(word, same_position, same_letter):
@@ -63,6 +79,9 @@ def print_word(word, same_position, same_letter):
         transformed[same_letter[i]] = word[same_letter[i]].lower()
     for i in range(0,len(same_position)):
         transformed[same_position[i]] = word[same_position[i]]
+
+
+    
     return transformed
     
 def choose_secret_advanced():
@@ -107,18 +126,23 @@ def check_valid_word(word, lista):
     Returns:
       word: Palabra introducida por el usuario que estÃ¡ en la lista.
     """
-
+    vacio = ""
     for i in range(0, len(lista)):
-        
+        if lista[i] == word:
+            return word
+    return vacio
 
 if __name__ == "__main__":
     resultadoCheck = False
     while(resultadoCheck == False):
-        word = input("Introduce una nueva palabra: ")
+        word = input("Introduce una palabra que este en la lista ")
         lista=["UNO","DOS","TRES","CUATRO"]
         palabra = check_valid_word(word, lista)
         if palabra == word:
             resultadoCheck = True
+            print("Bien")
+        else:
+            print("Mal intentalo de nuevo")
 
     secret=choose_secret()
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
