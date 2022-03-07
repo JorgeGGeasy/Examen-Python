@@ -75,6 +75,8 @@ def choose_secret_advanced():
       secret: Palabra elegida aleatoriamente de la lista de 15 seleccionadas transformada a mayÃºsculas
     """
     listaPalabras=[]
+    palabrasProhibidas=[]
+    palabrasLargas=[]
     with open("palabras_extended.txt", mode="rt", encoding="utf-8") as f:
         for linea in f:
             listaPalabras.append(linea)
@@ -82,13 +84,23 @@ def choose_secret_advanced():
     for i in range(0, len(listaPalabras)):
         for j in range(0,len(listaPalabras[i])):
             if listaPalabras[i][j] == "á" or listaPalabras[i][j] == "é" or listaPalabras[i][j] == "í" or  listaPalabras[i][j] == "ó" or  listaPalabras[i][j] == "ú":
-                print(listaPalabras[i])
+                palabrasProhibidas.append(listaPalabras[i])
+
+    for i in range(0, len(palabrasProhibidas)):
+        listaPalabras.remove(palabrasProhibidas[i])
+
+    for i in range(0, len(listaPalabras)):
+        if len(listaPalabras[i]) > 6:
+            palabrasLargas.append(listaPalabras[i])
+
+    for i in range(0, len(palabrasLargas)):
+        listaPalabras.remove(palabrasLargas[i])
+    
+    # Falta lo de barajas 15 veces
     palabra = random.choice(listaPalabras)
-    #lower(): transforma a minúsculas la cadena pasada como parámetro
-    #upper(): transforma a mayúsculas la cadena pasada como parámetro
     return palabra.upper() 
  
-def check_valid_word():
+def check_valid_word(word, lista):
     """Dada una lista de palabras, esta funciÃ³n pregunta al usuario que introduzca una palabra hasta que introduzca una que estÃ© en la lista. Esta palabra es la que devolverÃ¡ la funciÃ³n.
     Args:
       selected: Lista de palabras.
@@ -96,7 +108,33 @@ def check_valid_word():
       word: Palabra introducida por el usuario que estÃ¡ en la lista.
     """
 
+    for i in range(0, len(lista)):
+        
+
 if __name__ == "__main__":
+    resultadoCheck = False
+    while(resultadoCheck == False):
+        word = input("Introduce una nueva palabra: ")
+        lista=["UNO","DOS","TRES","CUATRO"]
+        palabra = check_valid_word(word, lista)
+        if palabra == word:
+            resultadoCheck = True
+
+    secret=choose_secret()
+    print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
+    for repeticiones in range(0,6):
+        word = input("Introduce una nueva palabra: ")
+        same_position, same_letter = compare_words(word, secret)
+        resultado=print_word(word,same_position, same_letter)
+        print(resultado)
+        print( "Word y secret")
+        print(word)
+        print(secret)
+        if word == secret:
+            print("HAS GANADO!!")
+            exit()
+    print("LO SIENTO, NO LA HAS ADIVINIDADO. LA PALABRA ERA "+secret)   
+
     secret=choose_secret_advanced()
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
@@ -104,6 +142,9 @@ if __name__ == "__main__":
         same_position, same_letter = compare_words(word, secret)
         resultado=print_word(word,same_position, same_letter)
         print(resultado)
+        print( "Word y secret")
+        print(word)
+        print(secret)
         if word == secret:
             print("HAS GANADO!!")
             exit()
