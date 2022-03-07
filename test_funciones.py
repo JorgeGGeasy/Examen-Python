@@ -7,10 +7,11 @@ import pytest
 
 def test_encontrar_menores():
     diccionario={
-        4:['ERGO'],
-        5:['MONTA'],
-        6:['AUNQUE','MELISA','ABINAR']
+        4:['ERGO','FLOR','TIZA','OPEN','MEAR','BABI','MOTE'],
+        5:['MONTA','ETILO','MANDO','PLAZO','RODAL','TORVO','BUZAR','LAUDA'],
+        6:['ROGADO','AUNQUE','MELISA','ABINAR','TERMAS','MUEBLE','ORANTE','BELDAR']
     }
+
 
     #comprobamos que las palabras con letras anteriores a 'B' son las siguientes
     lista=encontrar_menores(diccionario,'B')

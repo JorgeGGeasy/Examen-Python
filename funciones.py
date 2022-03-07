@@ -21,17 +21,15 @@ def encontrar_menores(diccionario,letra):
     
     for clave in diccionario:
         for palabra in diccionario[clave]:
+            posicionPalabras = 0
             for i in range(0,26):
-                print(palabra[0])
-                print(letras[i])
                 if palabra[0] == letras[i]:
                     break
                 posicionPalabras+=1
-            print(posicionPalabras)
-            if posicionPalabras <= posicion:
+            if posicionPalabras < posicion:
+                posicionPalabras = 0
                 resultado.append(palabra)
-        posicionPalabras = 0
-                
+                    
     return resultado
 
 def add_client(clients_list,nif,name,address,phone,email):
@@ -44,6 +42,7 @@ def add_client(clients_list,nif,name,address,phone,email):
       phone
       email
     """
+    print(clients_list)
     clients_list[nif] = {
         nif: {'name': name,
               'address': address,
@@ -51,6 +50,7 @@ def add_client(clients_list,nif,name,address,phone,email):
               'email': email
         }
     }
+    clients_list.items()
 
 def repartir_cartas(cartas_iniciales,repeticiones):
     """Dada una baraja de cartas iniciales y un nÃºmero de repeticiones, esta funciÃ³n selecciona 
@@ -65,6 +65,7 @@ def repartir_cartas(cartas_iniciales,repeticiones):
     combinaciones={}
     for i in range(1,repeticiones+1):
         cartas_aleatorias = cartas_iniciales 
+        print(cartas_aleatorias)
         combinaciones["repeticion"+str(i)]=[]
         for j in range(0,5):
             carta=random.choice(cartas_aleatorias)
